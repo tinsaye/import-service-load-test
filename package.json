@@ -1,0 +1,23 @@
+{
+  "name": "last-test",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tinsaye Abye",
+  "license": "MPL-2.0",
+  "bin": {
+    "last-test": "./index.js"
+  },
+  "dependencies": {
+    "form-data": "^2.2.0",
+    "json2csv": "^3.11.2",
+    "moment": "^2.19.0",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.3.0"
+  }
+}
