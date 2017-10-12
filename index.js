@@ -1,3 +1,6 @@
-const test = require('./lib/last-test');
+#!/usr/bin/env node
+'use strict';
+
+const test = require('./lib/load-test');
 
 test();

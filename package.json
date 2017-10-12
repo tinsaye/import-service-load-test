@@ -1,15 +1,20 @@
 {
-  "name": "last-test",
+  "name": "import-service-load-test",
   "version": "0.1.0",
-  "description": "",
+  "description": "CLI load testing tool for the SlideWiki import-service.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tinsaye/import-service-load-test"
   },
   "author": "Tinsaye Abye",
   "license": "MPL-2.0",
   "bin": {
-    "last-test": "./index.js"
+    "load-test": "./index.js"
   },
   "dependencies": {
     "form-data": "^2.2.0",
