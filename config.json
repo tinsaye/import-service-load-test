@@ -1,5 +1,5 @@
 {
-	"dir": "C:/Users/tinsa/SlideWiki/import-service-load-test/archive/",
+	"dir": "",
 	"request": 10,
 	"export-format": {
 		"data": "csv"
