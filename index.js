@@ -10,7 +10,6 @@ const fs = require('fs');
 const now = require('moment');
 const json2csv = require('json2csv');
 
-console.log(loadTest)
 
 // Create the log directory if it does not exist
 if (!fs.existsSync(logDir)) {
@@ -38,7 +37,9 @@ loadTest.readFiles(dir)
     return loadTest.fillBuffer(dir, fileName);
 }).then((data) => {
     numberOfFiles = data.length;
-    for (let j = 0; j < repeat; j = j + numberOfFiles) {
+    for (let j = repeat; j > 0; j = j - numberOfFiles) {
+    	// for maximum request = repeat 
+    	if (j < numberOfFiles) numberOfFiles = j;
         for (let k = 0; k < numberOfFiles; k++) {
             loadTest.makeRequest(data[k][0], data[k][1], (respond) => {
             	results.push(respond);
@@ -47,7 +48,8 @@ loadTest.readFiles(dir)
 	                let csv = json2csv({data: results, fields: ['statusCode', 'fileName', 'requestTime', 'deckId', 'noOfSlides'], quotes:''})
 	                fs.writeFile(file, csv, (err) => {
 	                    if (err) throw err;
-	                    return(csv);
+	                    console.log(csv)
+	                    return csv;
 	                });
             	}
             });
