@@ -23,38 +23,31 @@ if (!fs.existsSync(archive)) {
 
 let dir = (config.dir === "") ? './' + archive + '/' : config.dir;
 
-// for logging
-let results = [];
-
-
-// for counting reaquests
-let respondCount = 0; 
-let numberOfFiles = 0;
-const repeat = config.request;
 
 loadTest.readFiles(dir)
 .then((fileName) => {
     return loadTest.fillBuffer(dir, fileName);
 }).then((data) => {
-    numberOfFiles = data.length;
-    for (let j = repeat; j > 0; j = j - numberOfFiles) {
+    let numberOfFiles = data.length;
+    // create an array with data id so that dataId.length = number of requests
+    let dataId = []
+    for (let j = config.request; j > 0; j = j - numberOfFiles) {
     	// for maximum request = repeat 
     	if (j < numberOfFiles) numberOfFiles = j;
         for (let k = 0; k < numberOfFiles; k++) {
-            loadTest.makeRequest(data[k][0], data[k][1], (respond) => {
-            	results.push(respond);
-            	if (results.length === repeat) {
-	                let file = './log/loadTest_' + now().format('YYYY-MM-DD_HHmmss') + '.csv'
-	                let csv = json2csv({data: results, fields: ['statusCode', 'fileName', 'requestTime', 'deckId', 'noOfSlides'], quotes:''})
-	                fs.writeFile(file, csv, (err) => {
-	                    if (err) throw err;
-	                    console.log(csv)
-	                    return csv;
-	                });
-            	}
-            });
+            dataId.push(k);
         }
     }
+    return Promise.all(dataId.map((id) => {
+        return loadTest.makeRequest(data[id][0], data[id][1]);
+    })).then((results) => {
+        let file = './log/loadTest_' + now().format('YYYY-MM-DD_HHmmss') + '.csv'
+        let csv = json2csv({data: results, fields: ['statusCode', 'fileName', 'requestTime', 'deckId', 'noOfSlides'], quotes:''})
+        fs.writeFile(file, csv, (err) => {
+            if (err) throw err;
+            console.log(csv)
+        });
+    })
 })
 .catch((reason) => {
     console.log(reason);

@@ -20,15 +20,15 @@ describe('loadTest', () => {
 
 	describe('#fillBuffer()', () => {
 		it('should give an array ', () => {
-			return loadTest.fillBuffer(archive, ['test2.txt', 'test.txt']).should.eventually.deep.members([['test.txt','base64,VGVzdCBmaWxl'],['test2.txt','base64,VGVzdCBmaWxl']])
+			return loadTest.fillBuffer(archive, ['test2.txt', 'test.txt']).should.eventually.have.deep.members([['test.txt','base64,VGVzdCBmaWxl'],['test2.txt','base64,VGVzdCBmaWxl']])
 		})
 	})
 // TODO:
-	// describe('#makeRequest()', () => {
-	// 	it('should respond {statusCode, fileName, requestTime, deckId, noOfSlides}', () => {
-	// 		return loadTest.makeRequest('test','base64,VGVzdCBmaWxl',(res) => {
-	// 			console.log(res);
-	// 		}).should.have.keys('statusCode', 'fileName', 'requestTime', 'deckId', 'noOfSlides')
-	// 	})
-	// })
+	describe('#makeRequest()', () => {
+		it('should respond {statusCode, fileName, requestTime, deckId, noOfSlides}', () => {
+			return loadTest.makeRequest('test','base64,VGVzdCBmaWxl',(res) => {
+				console.log(res);
+			}).should.eventually.have.keys('statusCode', 'fileName', 'requestTime', 'deckId', 'noOfSlides')
+		})
+	})
 })

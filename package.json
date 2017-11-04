@@ -4,7 +4,7 @@
   "description": "CLI load testing tool for the SlideWiki import-service.",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha",
+    "test": "istanbul cover node_modules/mocha/bin/_mocha",
     "start": "node index.js"
   },
   "repository": {
