@@ -44,8 +44,7 @@ loadTest.readFiles(dir)
         let file = './log/loadTest_' + now().format('YYYY-MM-DD_HHmmss') + '.csv'
         let csv = json2csv({data: results, fields: ['statusCode', 'fileName', 'requestTime', 'deckId', 'noOfSlides'], quotes:''})
         fs.writeFile(file, csv, (err) => {
-            if (err) throw err;
-            console.log(csv)
+            if (err) console.error(err.toString());
         });
     })
 })

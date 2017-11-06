@@ -2,10 +2,10 @@
   "name": "import-service-load-test",
   "version": "0.5.1",
   "description": "CLI load testing tool for the SlideWiki import-service.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "istanbul cover node_modules/mocha/bin/_mocha",
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -14,20 +14,20 @@
   "author": "Tinsaye Abye",
   "license": "MPL-2.0",
   "bin": {
-    "load-test": "./index.js"
+    "load-test": "./app.js"
   },
   "dependencies": {
-    "chai-as-promised": "^7.1.1",
     "form-data": "^2.2.0",
     "json2csv": "^3.11.2",
     "moment": "^2.19.0",
-    "nyc": "^11.2.1",
     "request": "^2.81.0"
   },
   "devDependencies": {
+    "chai-as-promised": "^7.1.1",
     "chai": "^4.1.2",
     "eslint": "^4.3.0",
     "istanbul": "^0.4.5",
+    "nyc": "^11.2.1",
     "mocha": "^4.0.1"
   }
 }
