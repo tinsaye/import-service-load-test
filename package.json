@@ -23,11 +23,10 @@
     "request": "^2.81.0"
   },
   "devDependencies": {
-    "chai-as-promised": "^7.1.1",
     "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^4.3.0",
     "istanbul": "^0.4.5",
-    "nyc": "^11.2.1",
     "mocha": "^4.0.1"
   }
 }

@@ -46,6 +46,7 @@ loadTest.readFiles(dir)
         fs.writeFile(file, csv, (err) => {
             if (err) console.error(err.toString());
         });
+        console.log(loadTest.summary(results));
     })
 })
 .catch((reason) => {
