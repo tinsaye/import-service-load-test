@@ -1,6 +1,8 @@
 {
 	"dir": "",
-	"request": 1,
+	"groups": 2,
+	"groupSize": 5,
+	"breakTime": 5000,
 	"export-format": {
 		"data": "csv"
 	}
