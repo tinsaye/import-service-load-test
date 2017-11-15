@@ -10,7 +10,7 @@ const fs = require('fs');
 const now = require('moment');
 const json2csv = require('json2csv');
 
-const groups = new Array(config.groups).fill(1);
+const groups = new Array(config.groups);
 const groupSize = config.groupSize;
 const breakTime = config.breakTime;
 
@@ -30,23 +30,13 @@ loadTest.readFiles(dir)
 .then((fileName) => {
     return loadTest.fillBuffer(dir, fileName);
 }).then((data) => {
-    let numberOfFiles = data.length;
-    // create an array with data id so that dataId.length = number of requests
-    let dataId = []
-    for (let j = groupSize; j > 0; j = j - numberOfFiles) {
-        // for maximum request = repeat 
-        if (j < numberOfFiles) numberOfFiles = j;
-        for (let k = 0; k < numberOfFiles; k++) {
-            dataId.push(k);
-        }
+    for (let i = 0; i < groups.length; i++) {
+        groups[i] = (i + 1) * breakTime;
     }
-    return Promise.all(groups.map((id) => {
-        setTimeout(() => {
-        }, breakTime);
-        return Promise.all(dataId.map((id) => {
-            return loadTest.makeRequest(data[id][0], data[id][1]);
-        }))
-    }))
+    
+    return Promise.all(groups.map((timeout) => {
+        return loadTest.groupedTimedRequest(groupSize, timeout, data, loadTest.makeRequest)
+    }));
 }).then((results) => {
         let file = './log/loadTest_' + now().format('YYYY-MM-DD_HHmmss') + '.csv'
         let allResults = [];

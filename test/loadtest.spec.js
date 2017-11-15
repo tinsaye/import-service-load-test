@@ -1,9 +1,11 @@
 const chai = require('chai');
+const chaiThings = require('chai-things');
 const chaiAsPromised = require('chai-as-promised');
 const loadTest = require('../lib/load-test.js');
 const archive = "./test/archive/";
 const fs = require('fs');
 
+chai.use(chaiThings);
 chai.use(chaiAsPromised);
 chai.should();
 
@@ -45,7 +47,6 @@ describe('loadTest', () => {
 	describe('#makeRequest()', () => {
 		it('should respond {statusCode, fileName, requestTime, deckId, noOfSlides}', () => {
 			return loadTest.makeRequest('test','base64,VGVzdCBmaWxl',(res) => {
-				// console.log(res);
 			}).should.eventually.have.keys('statusCode', 'fileName', 'requestTime', 'deckId', 'noOfSlides')
 		})
 	})
@@ -91,20 +92,41 @@ describe('loadTest', () => {
 		})
 
 		it('gives back an average request time, number of succesfull / failed requests', () => {
-			loadTest.summary(array).should.have.keys('avgRequestTime', 'succesfullRequest', 'failedRequest');
+			return loadTest.summary(array).should.have.keys('avgRequestTime', 'succesfullRequest', 'failedRequest');
 		})
 
 		it('calculate the average request time', () => {
-			loadTest.summary(array).should.have.property('avgRequestTime', 300)
+			return loadTest.summary(array).should.have.property('avgRequestTime', 300)
 			.but.not.have.property('avgRequestTime', 400);
 		})
 
 		it('calculate number of succesfull requests', () => {
-			loadTest.summary(array).should.have.property('succesfullRequest', 2)
+			return loadTest.summary(array).should.have.property('succesfullRequest', 2);
 		})
 
 		it('calculate number of failed requests', () => {
-			loadTest.summary(array).should.have.property('failedRequest', 1)
+			return loadTest.summary(array).should.have.property('failedRequest', 1);
+		})
+	})
+
+	describe('#groupedTimedRequest()', () => {
+		let ms;
+		let groupSize;
+		let breakTime;
+		let data = ['test','base64,VGVzdCBmaWxl'];
+		beforeEach(() => {
+			ms = 1000;
+			groupSize = 5;
+			breakTime = 5000;
+		})
+
+		it('should respond with {statusCode, fileName, requestTime, deckId, noOfSlides}', () => {
+			return loadTest.groupedTimedRequest(groupSize, ms, data, loadTest.makeRequest).should.eventually.all.have
+				.keys('statusCode', 'fileName', 'requestTime', 'deckId', 'noOfSlides')
+		})
+
+		it('should make as many requests as the group size', () => {
+			return loadTest.groupedTimedRequest(groupSize, ms, data, loadTest.makeRequest).should.eventually.have.lengthOf(groupSize);
 		})
 	})
 })
